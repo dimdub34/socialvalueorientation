@@ -15,14 +15,6 @@ TREATMENTS_NAMES = {BASELINE: "Baseline"}
 # parameters -------------------------------------------------------------------
 TREATMENT = BASELINE
 TAUX_CONVERSION = 1
-NOMBRE_PERIODES = 0
-TAILLE_GROUPES = 0
-GROUPES_CHAQUE_PERIODE = False
 MONNAIE = u"None"
-PERIODE_ESSAI = False
 
-# DECISION
-DECISION_MIN = 0
-DECISION_MAX = 100
-DECISION_STEP = 1
 
