@@ -39,8 +39,6 @@ class Serveur(object):
         if screen_conf.exec_():
             self._le2mserv.gestionnaire_graphique.infoserv(u"Traitement: {}".format(
                 pms.TREATMENTS_NAMES.get(pms.TREATMENT)))
-            self._le2mserv.gestionnaire_graphique.infoserv(u"Période d'essai: {}".format(
-                u"oui" if pms.PERIODE_ESSAI else u"non"))
 
     @defer.inlineCallbacks
     def _demarrer(self):
@@ -63,45 +61,28 @@ class Serveur(object):
         # set parameters on remotes
         yield (self._le2mserv.gestionnaire_experience.run_step(
             le2mtrans(u"Configure"), self._tous, "configure"))
-        
-        # form groups
-        if pms.TAILLE_GROUPES > 0:
-            try:
-                self._le2mserv.gestionnaire_groupes.former_groupes(
-                    self._le2mserv.gestionnaire_joueurs.get_players(),
-                    pms.TAILLE_GROUPES, forcer_nouveaux=True)
-            except ValueError as e:
-                self._le2mserv.gestionnaire_graphique.display_error(
-                    e.message)
-                return
-    
+
         # Start part ===========================================================
-        period_start = 0 if pms.NOMBRE_PERIODES == 0 or pms.PERIODE_ESSAI else 1
-        for period in range(period_start, pms.NOMBRE_PERIODES + 1):
+        # init period
+        self._le2mserv.gestionnaire_graphique.infoserv(
+            [None, le2mtrans(u"Period") + u" {}".format(0)])
+        self._le2mserv.gestionnaire_graphique.infoclt(
+            [None, le2mtrans(u"Period") + u" {}".format(0)],
+            fg="white", bg="gray")
+        yield (self._le2mserv.gestionnaire_experience.run_func(
+            self._tous, "newperiod", 0))
 
-            if self._le2mserv.gestionnaire_experience.stop_repetitions:
-                break
+        # decision
+        yield(self._le2mserv.gestionnaire_experience.run_step(
+            le2mtrans(u"Decision"), self._tous, "display_decision"))
 
-            # init period
-            self._le2mserv.gestionnaire_graphique.infoserv(
-                [None, le2mtrans(u"Period") + u" {}".format(period)])
-            self._le2mserv.gestionnaire_graphique.infoclt(
-                [None, le2mtrans(u"Period") + u" {}".format(period)],
-                fg="white", bg="gray")
-            yield (self._le2mserv.gestionnaire_experience.run_func(
-                self._tous, "newperiod", period))
-            
-            # decision
-            yield(self._le2mserv.gestionnaire_experience.run_step(
-                le2mtrans(u"Decision"), self._tous, "display_decision"))
-            
-            # period payoffs
-            self._le2mserv.gestionnaire_experience.compute_periodpayoffs(
-                "socialvalueorientation")
-        
-            # summary
-            yield(self._le2mserv.gestionnaire_experience.run_step(
-                le2mtrans(u"Summary"), self._tous, "display_summary"))
+        # period payoffs
+        self._le2mserv.gestionnaire_experience.compute_periodpayoffs(
+            "socialvalueorientation")
+
+        # summary
+        yield(self._le2mserv.gestionnaire_experience.run_step(
+            le2mtrans(u"Summary"), self._tous, "display_summary"))
         
         # End of part ==========================================================
         yield (self._le2mserv.gestionnaire_experience.finalize_part(
