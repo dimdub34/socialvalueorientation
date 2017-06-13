@@ -51,16 +51,18 @@ class PartieSVO(Partie):
     @defer.inlineCallbacks
     def display_decision(self):
         """
-        Display the decision screen on the remote
-        Get back the decision
+        on envoie les matrices une par une
         :return:
         """
         logger.debug(u"{} Decision".format(self.joueur))
+        matrice = pms.matrices_A if pms.TREATMENT == pms.VERSION_A else pms.matrices_B
         debut = datetime.now()
-        self.currentperiod.SVO_decision = yield(self.remote.callRemote(
-            "display_decision"))
+        for m in range(1, len(matrice) + 1):
+            dec = yield (self.remote.callRemote(
+                "display_decision", matrice[m]))
+            setattr(self.currentperiod, "SVO_matrice_{}".format(m), dec)
+            self.joueur.info(u"mat. {}: {}".format(m, dec))
         self.currentperiod.SVO_decisiontime = (datetime.now() - debut).seconds
-        self.joueur.info(u"{}".format(self.currentperiod.SVO_decision))
         self.joueur.remove_waitmode()
 
     def compute_periodpayoff(self):
@@ -130,8 +132,21 @@ class RepetitionsSVO(Base):
 
     SVO_period = Column(Integer)
     SVO_treatment = Column(Integer)
-    SVO_group = Column(Integer)
-    SVO_decision = Column(Integer)
+    SVO_matrice_1 = Column(Integer)
+    SVO_matrice_2 = Column(Integer)
+    SVO_matrice_3 = Column(Integer)
+    SVO_matrice_4 = Column(Integer)
+    SVO_matrice_5 = Column(Integer)
+    SVO_matrice_6 = Column(Integer)
+    SVO_matrice_7 = Column(Integer)
+    SVO_matrice_8 = Column(Integer)
+    SVO_matrice_9 = Column(Integer)
+    SVO_matrice_10 = Column(Integer)
+    SVO_matrice_11 = Column(Integer)
+    SVO_matrice_12 = Column(Integer)
+    SVO_matrice_13 = Column(Integer)
+    SVO_matrice_14 = Column(Integer)
+    SVO_matrice_15 = Column(Integer)
     SVO_decisiontime = Column(Integer)
     SVO_periodpayoff = Column(Float)
     SVO_cumulativepayoff = Column(Float)
