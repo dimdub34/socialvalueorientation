@@ -22,17 +22,6 @@ except (AttributeError, IOError):
     trans_SVO = lambda x: x  # if there is an error, no translation
 
 
-def get_histo_vars():
-    return ["SVO_period", "SVO_decision",
-            "SVO_periodpayoff",
-            "SVO_cumulativepayoff"]
-
-
-def get_histo_head():
-    return [le2mtrans(u"Period"), le2mtrans(u"Decision"),
-             le2mtrans(u"Period\npayoff"), le2mtrans(u"Cumulative\npayoff")]
-
-
 def get_text_explanation():
     return trans_SVO(u"In this task you have been randomly paired with another "
                      u"person, whom we will refer to as the other. This other "
@@ -54,14 +43,5 @@ def get_text_explanation():
                      u"spaces on the right. As you can see, your choices will "
                      u"influence both the amount of money you receive as well "
                      u"as the amount of money the other receives")
-
-
-def get_text_label_decision():
-    return trans_SVO(u"Decision label")
-
-
-def get_text_summary(period_content):
-    txt = trans_SVO(u"Summary text")
-    return txt
 
 
