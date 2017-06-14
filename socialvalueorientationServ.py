@@ -37,8 +37,11 @@ class Serveur(object):
         # return
         screen_conf = DConfigure(self._le2mserv.gestionnaire_graphique.screen)
         if screen_conf.exec_():
-            self._le2mserv.gestionnaire_graphique.infoserv(u"Traitement: {}".format(
-                pms.TREATMENTS_NAMES.get(pms.TREATMENT)))
+            to_display = [
+                u"Traitement: {}".format(pms.TREATMENTS_NAMES[pms.TREATMENT]),
+                u"Affichage: {}".format(pms.DISPLAY_NAMES[pms.DISPLAY])
+            ]
+            self._le2mserv.gestionnaire_graphique.infoserv(to_display)
 
     @defer.inlineCallbacks
     def _demarrer(self):
@@ -81,8 +84,8 @@ class Serveur(object):
             "socialvalueorientation")
 
         # summary
-        yield(self._le2mserv.gestionnaire_experience.run_step(
-            le2mtrans(u"Summary"), self._tous, "display_summary"))
+        # yield(self._le2mserv.gestionnaire_experience.run_step(
+        #     le2mtrans(u"Summary"), self._tous, "display_summary"))
         
         # End of part ==========================================================
         yield (self._le2mserv.gestionnaire_experience.finalize_part(
