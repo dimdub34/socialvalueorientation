@@ -12,12 +12,15 @@ which means that you should ask to the developer ;-)
 VERSION_A = 0
 VERSION_B = 1
 TREATMENTS_NAMES = {VERSION_A: "Version A", VERSION_B: "Version B"}
+DISPLAY_SLIDER = 0
+DISPLAY_RADIO = 1
+DISPLAY_NAMES = {DISPLAY_SLIDER: "Sliders", DISPLAY_RADIO: "Radiobuttons"}
 
 # parameters -------------------------------------------------------------------
 TREATMENT = VERSION_A
+DISPLAY = DISPLAY_SLIDER
 TAUX_CONVERSION = 1
 MONNAIE = u"None"
-
 
 matrices_A = {
     1: ([85, 85, 85, 85, 85, 85, 85, 85, 85], [85, 76, 68, 59, 50, 41, 33, 24, 15]),
