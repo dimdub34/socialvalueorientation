@@ -50,11 +50,17 @@ class WMatrice(QtGui.QWidget):
 
         gridlayout.addWidget(QtGui.QLabel(trans_SVO(u"You")), 0, len(top) + 1)
         self.spinbox_you = QtGui.QSpinBox()
+        self.spinbox_you.setMinimum(0)
+        self.spinbox_you.setMaximum(999)
+        self.spinbox_you.setSingleStep(1)
         self.spinbox_you.setButtonSymbols(QtGui.QSpinBox.NoButtons)
         gridlayout.addWidget(self.spinbox_you, 0, len(top) + 2)
 
         gridlayout.addWidget(QtGui.QLabel(trans_SVO(u"Other")), 2, len(top) + 1)
         self.spinbox_other = QtGui.QSpinBox()
+        self.spinbox_other.setMinimum(0)
+        self.spinbox_other.setMaximum(999)
+        self.spinbox_other.setSingleStep(1)
         self.spinbox_other.setButtonSymbols(QtGui.QSpinBox.NoButtons)
         gridlayout.addWidget(self.spinbox_other, 2, len(top) + 2)
 
