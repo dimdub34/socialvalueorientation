@@ -1,0 +1,96 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-06-14 09:01+0200\n"
+"PO-Revision-Date: 2017-06-14 09:01+0200\n"
+"Last-Translator: Dimitri DUBOIS <dimitri.dubois@umontpellier.fr>\n"
+"Language-Team: \n"
+"Language: fr_FR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.7.1\n"
+
+#: /home/dimitri/Documents/travail/programmes/le2m-v2.1/le2m/parts/socialvalueorientation/socialvalueorientationTexts.py:26
+msgid ""
+"In this task you have been randomly paired with another person, whom we will "
+"refer to as the other. This other person is someone you do not know and will "
+"remain mutually anonymous. All of your choices are completely confidential. "
+"You will be making a series of decisions about allocating resources between "
+"you and this other person. For each of the following questions, please "
+"indicate the distribution you prefer most by marking the respective position "
+"along the midline. You can only make one mark for each question. Your "
+"decisions will yield money for both yourself and the other person. In the "
+"example below, a person has chosen to distribute money so that he/she "
+"receives 50 dollars, while the anonymous other person receives 40 dollars. "
+"There are no right or wrong answers, this is all about personal preferences. "
+"After you have made your decision, write the resulting distribution of money "
+"on the spaces on the right. As you can see, your choices will influence both "
+"the amount of money you receive as well as the amount of money the other "
+"receives"
+msgstr ""
+"Dans cet exercice, vous prendrez une série de décisions de distribution "
+"d’argent pour vous et pour une autre personne. L’autre personne est "
+"quelqu’un que vous ne connaissez pas, qui ne vous connaît pas, et vous "
+"resterez anonymes. Chaque choix est entièrement confidentiel. Pour chacune "
+"des questions suivantes, indiquez la distribution d’argent que vous préférez "
+"en marquant une position sur la ligne du milieu. Vous ne pouvez faire qu’un "
+"seul marquage par question. Vos décisions vous rapporteront de l’argent, "
+"aussi bien pour vous que pour l’autre personne. Dans l’exemple ci-dessous, "
+"une personne a choisi de distribuer l’argent en sorte qu’elle reçoive 50 "
+"dollars, tandis que l’autre personne anonyme reçoit 40 dollars. Il n’y a ni "
+"de réponses correctes, ni fausses dans cette tâche ; il ne s’agît que de "
+"préférences personnelles. Après avoir pris toutes vos décisions, écrivez la "
+"distribution d’argent résultante dans les espaces à droite. Comme vous "
+"voyez, vos décisions influenceront la somme d’argent que vous recevrez, tout "
+"comme la somme d’argent que l’autre recevra."
+
+#: /home/dimitri/Documents/travail/programmes/le2m-v2.1/le2m/parts/socialvalueorientation/socialvalueorientationGui.py:35
+msgid "You receive"
+msgstr "Vous recevez"
+
+#: /home/dimitri/Documents/travail/programmes/le2m-v2.1/le2m/parts/socialvalueorientation/socialvalueorientationGui.py:37
+msgid "The other receives"
+msgstr "L'autre reçoit"
+
+#: /home/dimitri/Documents/travail/programmes/le2m-v2.1/le2m/parts/socialvalueorientation/socialvalueorientationGui.py:48
+msgid "You"
+msgstr "Vous"
+
+#: /home/dimitri/Documents/travail/programmes/le2m-v2.1/le2m/parts/socialvalueorientation/socialvalueorientationGui.py:56
+msgid "Other"
+msgstr "L'autre"
+
+#: /home/dimitri/Documents/travail/programmes/le2m-v2.1/le2m/parts/socialvalueorientation/socialvalueorientationGui.py:90
+msgid "Décision"
+msgstr "Décision"
+
+#: /home/dimitri/Documents/travail/programmes/le2m-v2.1/le2m/parts/socialvalueorientation/socialvalueorientationGui.py:111
+msgid "Please select a distribution"
+msgstr "Merci de sélectionner une distribution"
+
+#: /home/dimitri/Documents/travail/programmes/le2m-v2.1/le2m/parts/socialvalueorientation/socialvalueorientationGui.py:114
+msgid ""
+"The value you wrote for 'you' doesn't correspond to the distribution you "
+"choose."
+msgstr ""
+"La valeur que vous avez saisie pour 'vous' ne correspond pas à la "
+"distribution que vous avez choisie."
+
+#: /home/dimitri/Documents/travail/programmes/le2m-v2.1/le2m/parts/socialvalueorientation/socialvalueorientationGui.py:119
+msgid ""
+"The value you wrote for 'other' doesn't correspond to the distribution you "
+"choose."
+msgstr ""
+"La valeur que vous avez saisie pour 'l\\'autre' ne correspond pas à la "
+"distribution que vous avez choisie."
+
+#: /home/dimitri/Documents/travail/programmes/le2m-v2.1/le2m/parts/socialvalueorientation/socialvalueorientationGui.py:123
+msgid "Be careful"
+msgstr "Attention"
