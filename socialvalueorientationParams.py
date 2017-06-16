@@ -18,7 +18,7 @@ DISPLAY_NAMES = {DISPLAY_SLIDER: "Sliders", DISPLAY_RADIO: "Radiobuttons"}
 
 # parameters -------------------------------------------------------------------
 TREATMENT = VERSION_A
-DISPLAY = DISPLAY_SLIDER
+DISPLAY = DISPLAY_RADIO
 TAUX_CONVERSION = 1
 MONNAIE = u"None"
 
