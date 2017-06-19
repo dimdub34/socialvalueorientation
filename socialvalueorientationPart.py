@@ -4,7 +4,7 @@ import logging
 from datetime import datetime
 from twisted.internet import defer
 from sqlalchemy.orm import relationship
-from sqlalchemy import Column, Integer, Float, ForeignKey
+from sqlalchemy import Column, Integer, Float, ForeignKey, String
 from server.servbase import Base
 from server.servparties import Partie
 from util.utiltools import get_module_attributes
@@ -59,7 +59,7 @@ class PartieSVO(Partie):
         debut = datetime.now()
         for m in range(1, len(matrice) + 1):
             dec = yield (self.remote.callRemote(
-                "display_decision", matrice[m]))
+                "display_decision", m, matrice[m]))
             setattr(self.currentperiod, "SVO_matrice_{}".format(m), dec)
             self.joueur.info(u"mat. {}: {}".format(m, dec))
         self.currentperiod.SVO_decisiontime = (datetime.now() - debut).seconds
@@ -71,7 +71,15 @@ class PartieSVO(Partie):
         :return:
         """
         logger.debug(u"{} Period Payoff".format(self.joueur))
-        self.currentperiod.SVO_periodpayoff = 0
+        matrices = pms.matrices_A if pms.TREATMENT == pms.VERSION_A else \
+            pms.matrices_B
+        payoffs = matrices[self.currentperiod.SVO_tirage]
+        if self.currentperiod.SVO_role == pms.ROLE_A:
+            self.currentperiod.SVO_periodpayoff = \
+                payoffs[0][self.currentperiod.SVO_choix_A_tirage]
+        else:
+            self.currentperiod.SVO_periodpayoff = \
+                payoffs[1][self.currentperiod.SVO_choix_A_tirage]
 
         # cumulative payoff since the first period
         if self.currentperiod.SVO_period < 2:
@@ -132,6 +140,7 @@ class RepetitionsSVO(Base):
 
     SVO_period = Column(Integer)
     SVO_treatment = Column(Integer)
+    SVO_group = Column(String)
     SVO_matrice_1 = Column(Integer)
     SVO_matrice_2 = Column(Integer)
     SVO_matrice_3 = Column(Integer)
@@ -147,6 +156,9 @@ class RepetitionsSVO(Base):
     SVO_matrice_13 = Column(Integer)
     SVO_matrice_14 = Column(Integer)
     SVO_matrice_15 = Column(Integer)
+    SVO_tirage = Column(Integer)
+    SVO_role = Column(Integer)
+    SVO_choix_A_tirage = Column(Integer)
     SVO_decisiontime = Column(Integer)
     SVO_periodpayoff = Column(Float)
     SVO_cumulativepayoff = Column(Float)

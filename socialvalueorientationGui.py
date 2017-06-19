@@ -31,7 +31,8 @@ class WMatrice(QtGui.QWidget):
         gridlayout = QtGui.QGridLayout()
         self.widget.setLayout(gridlayout)
 
-        top, bottom = matrice
+        self.matrice = matrice
+        top, bottom = self.matrice
 
         label_you = QtGui.QLabel(trans_SVO(u"You receive"))
         gridlayout.addWidget(label_you, 0, 0)
@@ -45,6 +46,7 @@ class WMatrice(QtGui.QWidget):
             self.radios_group.addButton(radio, i)
             gridlayout.addWidget(radio, 1, i+1)
             gridlayout.addWidget(QtGui.QLabel(str(bottom[i])), 2, i + 1)
+        self.radios_group.buttonClicked.connect(self.set_values)
 
         gridlayout.addWidget(QtGui.QLabel(trans_SVO(u"You")), 0, len(top) + 1)
         self.spinbox_you = QtGui.QSpinBox()
@@ -52,6 +54,8 @@ class WMatrice(QtGui.QWidget):
         self.spinbox_you.setMaximum(999)
         self.spinbox_you.setSingleStep(1)
         self.spinbox_you.setButtonSymbols(QtGui.QSpinBox.NoButtons)
+        self.spinbox_you.setStyleSheet("font-weight: bold; color: black;")
+        self.spinbox_you.setEnabled(False)
         gridlayout.addWidget(self.spinbox_you, 0, len(top) + 2)
 
         gridlayout.addWidget(QtGui.QLabel(trans_SVO(u"Other")), 2, len(top) + 1)
@@ -60,6 +64,8 @@ class WMatrice(QtGui.QWidget):
         self.spinbox_other.setMaximum(999)
         self.spinbox_other.setSingleStep(1)
         self.spinbox_other.setButtonSymbols(QtGui.QSpinBox.NoButtons)
+        self.spinbox_other.setStyleSheet("font-weight: bold; color: black;")
+        self.spinbox_other.setEnabled(False)
         gridlayout.addWidget(self.spinbox_other, 2, len(top) + 2)
 
         self.adjustSize()
@@ -68,6 +74,11 @@ class WMatrice(QtGui.QWidget):
             self.radios_group.button(random.randint(0, len(top)-1)).setChecked(True)
             self.spinbox_you.setValue(top[self.radios_group.checkedId()])
             self.spinbox_other.setValue(bottom[self.radios_group.checkedId()])
+
+    @QtCore.pyqtSlot()
+    def set_values(self):
+        self.spinbox_you.setValue(self.matrice[0][self.radios_group.checkedId()])
+        self.spinbox_other.setValue(self.matrice[1][self.radios_group.checkedId()])
 
 
 class WSlide(QtGui.QWidget):
@@ -145,7 +156,7 @@ class WSlide(QtGui.QWidget):
 
 
 class GuiDecision(QtGui.QDialog):
-    def __init__(self, defered, automatique, parent, matrice):
+    def __init__(self, defered, automatique, parent, num_question, matrice):
         super(GuiDecision, self).__init__(parent)
 
         # variables
@@ -157,7 +168,7 @@ class GuiDecision(QtGui.QDialog):
 
         wexplanation = WExplication(
             text=texts_SVO.get_text_explanation(),
-            size=(650, 250), parent=self)
+            size=(650, 150), parent=self)
         layout.addWidget(wexplanation)
 
         if pms.DISPLAY == pms.DISPLAY_SLIDER:
@@ -171,7 +182,7 @@ class GuiDecision(QtGui.QDialog):
         buttons.accepted.connect(self._accept)
         layout.addWidget(buttons)
 
-        self.setWindowTitle(trans_SVO(u"Décision"))
+        self.setWindowTitle(trans_SVO(u"Question {}".format(num_question)))
         self.adjustSize()
         self.setFixedSize(self.size())
 

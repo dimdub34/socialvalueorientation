@@ -41,21 +41,21 @@ class RemoteSVO(IRemote):
         logger.info(u"{} Period {}".format(self._le2mclt.uid, period))
         self.currentperiod = period
 
-    def remote_display_decision(self, matrice):
+    def remote_display_decision(self, num_question, matrice):
         """
         Display the decision screen
         :return: deferred
         """
         logger.info(u"{} Decision".format(self._le2mclt.uid))
         if self._le2mclt.simulation:
-            decision = random.randint(1, len(matrice[0]))
+            decision = random.randint(0, len(matrice[0])-1)
             logger.info(u"{} Send back {}".format(self._le2mclt.uid, decision))
             return decision
         else:
             defered = defer.Deferred()
             ecran_decision = GuiDecision(
                 defered, self._le2mclt.automatique,
-                self._le2mclt.screen, matrice)
+                self._le2mclt.screen, num_question, matrice)
             ecran_decision.show()
             return defered
 

@@ -7,6 +7,7 @@ from util import utiltools
 from util.utili18n import le2mtrans
 import socialvalueorientationParams as pms
 from socialvalueorientationGui import DConfigure
+import random
 
 
 logger = logging.getLogger("le2m.{}".format(__name__))
@@ -50,6 +51,17 @@ class Serveur(object):
         :return:
         """
         # check conditions =====================================================
+        if self._le2mserv.gestionnaire_joueurs.nombre_joueurs == 0:
+            self._le2mserv.gestionnaire_graphique.display_error(
+                le2mtrans(u"No clients connected!"))
+            return
+
+        if self._le2mserv.gestionnaire_joueurs.nombre_joueurs % \
+                2 != 0:
+            self._le2mserv.gestionnaire_graphique.display_error(
+                u"Il faut un nombre de joueurs multiple de 2")
+            return
+
         if not self._le2mserv.gestionnaire_graphique.question(
                         le2mtrans(u"Start") + u" socialvalueorientation?"):
             return
@@ -65,6 +77,10 @@ class Serveur(object):
         yield (self._le2mserv.gestionnaire_experience.run_step(
             le2mtrans(u"Configure"), self._tous, "configure"))
 
+        # form groups
+        self._le2mserv.gestionnaire_groupes.former_groupes(
+            self._le2mserv.gestionnaire_joueurs.get_players(), 2)
+
         # Start part ===========================================================
         # init period
         self._le2mserv.gestionnaire_graphique.infoserv(
@@ -75,9 +91,33 @@ class Serveur(object):
         yield (self._le2mserv.gestionnaire_experience.run_func(
             self._tous, "newperiod", 0))
 
+        # Roles et tirages
+        self._le2mserv.gestionnaire_graphique.infoserv(u"Rôles et tirages")
+        matrices = pms.matrices_A if pms.TREATMENT == pms.VERSION_A else \
+            pms.matrices_B
+        for g, m in self._le2mserv.gestionnaire_groupes.get_groupes(
+                "socialvalueorientation").items():
+            tirage = random.randint(1, len(matrices))
+            m[0].currentperiod.SVO_role = pms.ROLE_A
+            m[0].currentperiod.SVO_tirage = tirage
+            m[1].currentperiod.SVO_role = pms.ROLE_B
+            m[1].currentperiod.SVO_tirage = tirage
+            self._le2mserv.gestionnaire_graphique.infoserv(
+                u"G{} - A: {}, B: {}, Tirage: {}".format(
+                    g.split("_")[2], m[0].joueur, m[1].joueur, tirage))
+
         # decision
         yield(self._le2mserv.gestionnaire_experience.run_step(
             le2mtrans(u"Decision"), self._tous, "display_decision"))
+
+        # enregistrement de la décision du Role A ds chq groupe
+        for g, m in self._le2mserv.gestionnaire_groupes.get_groupes(
+                "socialvalueorientation").items():
+            choix_A_tirage = getattr(m[0].currentperiod,
+                                     "SVO_matrice_{}".format(
+                                         m[0].currentperiod.SVO_tirage))
+            m[0].currentperiod.SVO_choix_A_tirage = choix_A_tirage
+            m[1].currentperiod.SVO_choix_A_tirage = choix_A_tirage
 
         # period payoffs
         self._le2mserv.gestionnaire_experience.compute_periodpayoffs(

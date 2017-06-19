@@ -15,11 +15,13 @@ TREATMENTS_NAMES = {VERSION_A: "Version A", VERSION_B: "Version B"}
 DISPLAY_SLIDER = 0
 DISPLAY_RADIO = 1
 DISPLAY_NAMES = {DISPLAY_SLIDER: "Sliders", DISPLAY_RADIO: "Radiobuttons"}
+ROLE_A = 0  # celui qui choisit la répartition pour le calcul du gain
+ROLE_B = 1
 
 # parameters -------------------------------------------------------------------
 TREATMENT = VERSION_A
 DISPLAY = DISPLAY_RADIO
-TAUX_CONVERSION = 1
+TAUX_CONVERSION = 0.05
 MONNAIE = u"None"
 
 matrices_A = {
