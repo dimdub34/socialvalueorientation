@@ -91,42 +91,40 @@ class Serveur(object):
         yield (self._le2mserv.gestionnaire_experience.run_func(
             self._tous, "newperiod", 0))
 
-        # Roles et tirages
-        self._le2mserv.gestionnaire_graphique.infoserv(u"Rôles et tirages")
-        matrices = pms.matrices_A if pms.TREATMENT == pms.VERSION_A else \
-            pms.matrices_B
-        for g, m in self._le2mserv.gestionnaire_groupes.get_groupes(
-                "socialvalueorientation").items():
-            tirage = random.randint(1, len(matrices))
-            m[0].currentperiod.SVO_role = pms.ROLE_A
-            m[0].currentperiod.SVO_tirage = tirage
-            m[1].currentperiod.SVO_role = pms.ROLE_B
-            m[1].currentperiod.SVO_tirage = tirage
-            self._le2mserv.gestionnaire_graphique.infoserv(
-                u"G{} - A: {}, B: {}, Tirage: {}".format(
-                    g.split("_")[2], m[0].joueur, m[1].joueur, tirage))
-
         # decision
         yield(self._le2mserv.gestionnaire_experience.run_step(
             le2mtrans(u"Decision"), self._tous, "display_decision"))
 
-        # enregistrement de la décision du Role A ds chq groupe
+        # tirage et enregistrement de la décision de l'autre pour la question
+        # tirée
+        self._le2mserv.gestionnaire_graphique.infoserv(u"Tirages")
+        matrices = pms.matrices_A if pms.TREATMENT == pms.VERSION_A else \
+            pms.matrices_B
         for g, m in self._le2mserv.gestionnaire_groupes.get_groupes(
                 "socialvalueorientation").items():
-            choix_A_tirage = getattr(m[0].currentperiod,
-                                     "SVO_matrice_{}".format(
-                                         m[0].currentperiod.SVO_tirage))
-            m[0].currentperiod.SVO_choix_A_tirage = choix_A_tirage
-            m[1].currentperiod.SVO_choix_A_tirage = choix_A_tirage
+            # m[0]
+            tirage_m0 = random.randint(1, len(matrices))
+            m[0].currentperiod.SVO_tirage = tirage_m0
+            choix_m0 = getattr(m[0].currentperiod, "SVO_matrice_{}".format(tirage_m0))
+            m[1].currentperiod.SVO_tirage_paire = tirage_m0
+            m[1].currentperiod.SVO_choix_paire_tirage = choix_m0
+            
+            # m[1]
+            tirage_m1 = random.randint(1, len(matrices))
+            m[1].currentperiod.SVO_tirage = tirage_m1
+            choix_m1 = getattr(m[1].currentperiod, "SVO_matrice_{}".format(tirage_m1))
+            m[0].currentperiod.SVO_tirage_paire = tirage_m1
+            m[0].currentperiod.SVO_choix_paire_tirage = choix_m1
+
+            self._le2mserv.gestionnaire_graphique.infoserv(
+                u"G{} - {} ({}), {} ({})".format(
+                    g.split("_")[2], m[0].joueur, tirage_m0, m[1].joueur,
+                    tirage_m1))
 
         # period payoffs
         self._le2mserv.gestionnaire_experience.compute_periodpayoffs(
             "socialvalueorientation")
 
-        # summary
-        # yield(self._le2mserv.gestionnaire_experience.run_step(
-        #     le2mtrans(u"Summary"), self._tous, "display_summary"))
-        
         # End of part ==========================================================
         yield (self._le2mserv.gestionnaire_experience.finalize_part(
             "socialvalueorientation"))

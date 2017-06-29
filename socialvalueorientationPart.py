@@ -73,13 +73,18 @@ class PartieSVO(Partie):
         logger.debug(u"{} Period Payoff".format(self.joueur))
         matrices = pms.matrices_A if pms.TREATMENT == pms.VERSION_A else \
             pms.matrices_B
-        payoffs = matrices[self.currentperiod.SVO_tirage]
-        if self.currentperiod.SVO_role == pms.ROLE_A:
-            self.currentperiod.SVO_periodpayoff = \
-                payoffs[0][self.currentperiod.SVO_choix_A_tirage]
-        else:
-            self.currentperiod.SVO_periodpayoff = \
-                payoffs[1][self.currentperiod.SVO_choix_A_tirage]
+
+        matrice_joueur = matrices[self.currentperiod.SVO_tirage]
+        matrice_paire = matrices[self.currentperiod.SVO_tirage_paire]
+
+
+        choix_joueur = getattr(self.currentperiod,
+                                  "SVO_matrice_{}".format(
+                                      self.currentperiod.SVO_tirage))
+
+        self.currentperiod.SVO_periodpayoff = \
+            matrice_joueur[0][choix_joueur] + \
+            matrice_paire[1][self.currentperiod.SVO_choix_paire_tirage]
 
         # cumulative payoff since the first period
         if self.currentperiod.SVO_period < 2:
@@ -158,7 +163,8 @@ class RepetitionsSVO(Base):
     SVO_matrice_15 = Column(Integer)
     SVO_tirage = Column(Integer)
     SVO_role = Column(Integer)
-    SVO_choix_A_tirage = Column(Integer)
+    SVO_tirage_paire = Column(Integer)
+    SVO_choix_paire_tirage = Column(Integer)
     SVO_decisiontime = Column(Integer)
     SVO_periodpayoff = Column(Float)
     SVO_cumulativepayoff = Column(Float)
